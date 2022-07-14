@@ -1,19 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { getDowRoute } from '../utils/APIRoutes'
+import Dow from '../assets/dow.json'
 
 import { ImPriceTag } from 'react-icons/im'
 import { AiFillCaretUp, AiFillCaretDown } from 'react-icons/ai'
 
 const Home = () => {
+
+    const [dowStocks, setDowStocks] = useState([])
+
     useEffect(() => {
         async function action() {
+            console.log(Dow.DOW)
             const response = await axios.post(getDowRoute, {
-                dow: ["AAPL", "AMGN"]
+                dow: ["AAPL", "AMGN", "AXP", "BA", "CAT"]
             })
             console.log(response.data)
-
+            setDowStocks(response.data)
         }
         action()
     }, [])
@@ -34,7 +39,7 @@ const Home = () => {
             </div>
 
             {/* TO BE RENDERED DYNAMICALLY BY ITERATING THROUGH DOW LIST */}
-            <div className="table-row">
+            {/* <div className="table-row">
                 <div className="cell-grow">Facebook</div>
                 <div className="cell" style={{ width: "20px" }}>FB</div>
                 <div className="cell" style={{ width: "20px" }}>161.78</div>
@@ -59,13 +64,27 @@ const Home = () => {
                 <div className="cell" style={{ width: "100px" }}><AiFillCaretUp className='stock up' />0.15%</div>
                 <div className="cell" style={{ width: "130px" }}>16,408,062,100</div>
                 <div className="cell" style={{ width: "120px" }}><ImPriceTag style={{ margin: "0 .75rem" }} />18% Buy</div>
-            </div>
+            </div> */}
+            {
+                dowStocks?.map((stock, i) => {
+                    return (
+                        <div className="table-row" key={stock.symbol}>
+                            <div className="cell-grow">{stock.name}</div>
+                            <div className="cell" style={{ width: "20px" }}>{stock.symbol}</div>
+                            <div className="cell" style={{ width: "20px" }}>{stock.price}</div>
+                            <div className="cell" style={{ width: "100px" }}>{stock.today > 0 ? <AiFillCaretUp className='stock up' /> : <AiFillCaretDown className='stock down' />}{Math.abs(stock.today)}%</div>
+                            <div className="cell" style={{ width: "130px" }}>{stock.marketCap}</div>
+                            <div className="cell" style={{ width: "120px" }}><ImPriceTag style={{ margin: "0 .75rem" }} />{stock.analystRating}% Buy</div>
+                        </div>
+                    )
+                })
+            }
         </Container>
     )
 }
 
 export const Container = styled.div`
-  height: 75vh;
+  min-height: 75vh;
   max-width: 1400px;
   min-width: 780px;
   margin: auto;

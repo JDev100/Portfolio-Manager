@@ -1,8 +1,8 @@
 var yahooFinance = require('yahoo-finance');
 var humanize = require('humanize-plus')
 function calculateAnalystTrend(trend) {
-    console.log(trend.buy + trend.strongBuy)
-    console.log(trend.sell + trend.strongSell + trend.hold + trend.buy + trend.strongBuy)
+    // console.log(trend.buy + trend.strongBuy)
+    // console.log(trend.sell + trend.strongSell + trend.hold + trend.buy + trend.strongBuy)
     return parseInt(parseFloat(trend.buy + trend.strongBuy) / parseFloat(((trend.buy+trend.sell + trend.strongBuy + trend.strongSell + trend.hold))) * 100)
 }
 
@@ -12,10 +12,10 @@ module.exports.getDow = async (req, res, next) => {
 
         const stocks = []
         for (let index = 0; index < dow.length; index++) {
-            console.log(dow[index])
+            // console.log(dow[index])
             await yahooFinance.quote({
                 symbol: dow[index],
-                modules: ['price', 'summaryDetail', 'recommendationTrend']       // optional; default modules.
+                modules: ['price',  'recommendationTrend']       // optional; default modules.
             }, (err, quote) => {
                 stocks.push({
                     name: quote.price.shortName,
@@ -25,7 +25,7 @@ module.exports.getDow = async (req, res, next) => {
                     marketCap: humanize.intComma(quote.price.marketCap),
                     analystRating: calculateAnalystTrend(quote.recommendationTrend.trend[0])
                 })
-                console.log(quote);
+                // console.log(quote);
             });
         }
         res.json(stocks)
