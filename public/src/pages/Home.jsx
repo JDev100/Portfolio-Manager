@@ -10,7 +10,7 @@ const Home = () => {
     useEffect(() => {
         async function action() {
             const response = await axios.post(getDowRoute, {
-                dow: ["AAPL"]
+                dow: ["AAPL", "AMGN"]
             })
             console.log(response.data)
 
