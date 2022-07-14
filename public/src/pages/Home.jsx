@@ -10,18 +10,44 @@ import { AiFillCaretUp, AiFillCaretDown } from 'react-icons/ai'
 const Home = () => {
 
     const [dowStocks, setDowStocks] = useState([])
+    const [index, setIndex] = useState(-1)
+
+    useEffect(() => {
+        setIndex(0)
+        // async function action() {
+        //     // console.log(Dow.DOW)
+
+        //     const response = await axios.post(getDowRoute, {
+        //         dow: Dow.DOW.slice(index,index+5)
+        //     })
+        //     var oldStocks = dowStocks
+        //     // oldStocks.concat(response.data)
+        //     // oldStocks = [...dowStocks, response.data]
+        //     setDowStocks(response.data)
+        //     console.log(oldStocks)
+        //     // setDowStocks(response.data)
+        //     setIndex((prevIndex) => prevIndex+5)
+        // }
+        // action()
+    }, [])
 
     useEffect(() => {
         async function action() {
-            console.log(Dow.DOW)
+            console.log(dowStocks)
+            
             const response = await axios.post(getDowRoute, {
-                dow: ["AAPL", "AMGN", "AXP", "BA", "CAT"]
+                dow: Dow.DOW.slice(index, index+5)
             })
-            console.log(response.data)
-            setDowStocks(response.data)
+            // var oldStocks = dowStocks
+            // oldStocks.concat(response.data)
+            const oldStocks = [dowStocks, response.data]
+            setDowStocks((prevState) => [...prevState, ...response.data])
+            setIndex((prevIndex) => prevIndex+5)
+            console.log(oldStocks)
         }
+        if (index < Dow.DOW.length)
         action()
-    }, [])
+    }, [index])
 
     return (
         <Container>
@@ -68,7 +94,7 @@ const Home = () => {
             {
                 dowStocks?.map((stock, i) => {
                     return (
-                        <div className="table-row" key={stock.symbol}>
+                        <div className="table-row" key={i}>
                             <div className="cell-grow">{stock.name}</div>
                             <div className="cell" style={{ width: "20px" }}>{stock.symbol}</div>
                             <div className="cell" style={{ width: "20px" }}>{stock.price}</div>
