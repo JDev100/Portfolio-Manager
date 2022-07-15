@@ -1,9 +1,54 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
+import { getDowRoute } from '../utils/APIRoutes'
+import Dow from '../assets/dow.json'
 
-import {ImPriceTag} from 'react-icons/im'
-import {AiFillCaretUp, AiFillCaretDown} from 'react-icons/ai'
+import { ImPriceTag } from 'react-icons/im'
+import { AiFillCaretUp, AiFillCaretDown } from 'react-icons/ai'
+
 const Home = () => {
+
+    const [dowStocks, setDowStocks] = useState([])
+    const [index, setIndex] = useState(-1)
+
+    useEffect(() => {
+        setIndex(0)
+        // async function action() {
+        //     // console.log(Dow.DOW)
+
+        //     const response = await axios.post(getDowRoute, {
+        //         dow: Dow.DOW.slice(index,index+5)
+        //     })
+        //     var oldStocks = dowStocks
+        //     // oldStocks.concat(response.data)
+        //     // oldStocks = [...dowStocks, response.data]
+        //     setDowStocks(response.data)
+        //     console.log(oldStocks)
+        //     // setDowStocks(response.data)
+        //     setIndex((prevIndex) => prevIndex+5)
+        // }
+        // action()
+    }, [])
+
+    useEffect(() => {
+        async function action() {
+            console.log(dowStocks)
+            
+            const response = await axios.post(getDowRoute, {
+                dow: Dow.DOW.slice(index, index+5)
+            })
+            // var oldStocks = dowStocks
+            // oldStocks.concat(response.data)
+            const oldStocks = [dowStocks, response.data]
+            setDowStocks((prevState) => [...prevState, ...response.data])
+            setIndex((prevIndex) => prevIndex+5)
+            console.log(oldStocks)
+        }
+        if (index < Dow.DOW.length)
+        action()
+    }, [index])
+
     return (
         <Container>
             <div className="table-header">
@@ -11,48 +56,63 @@ const Home = () => {
             </div>
             <div className="table-row main">
                 <div className="cell-grow">Name</div>
-             
-                <div className="cell" style={{width:"20px"}}>Symbol</div>
-                <div className="cell" style={{width:"20px"}}>Price</div>
-                <div className="cell" style={{width:"100px"}}>Today</div>
-                <div className="cell" style={{width:"130px"}}>Market Cap</div>
-                <div className="cell" style={{width:"120px"}}>Analyst Ratings</div>
+
+                <div className="cell" style={{ width: "20px" }}>Symbol</div>
+                <div className="cell" style={{ width: "20px" }}>Price</div>
+                <div className="cell" style={{ width: "100px" }}>Today</div>
+                <div className="cell" style={{ width: "130px" }}>Market Cap</div>
+                <div className="cell" style={{ width: "120px" }}>Analyst Ratings</div>
             </div>
 
             {/* TO BE RENDERED DYNAMICALLY BY ITERATING THROUGH DOW LIST */}
-            <div className="table-row">
+            {/* <div className="table-row">
                 <div className="cell-grow">Facebook</div>
-                <div className="cell" style={{width:"20px"}}>FB</div>
-                <div className="cell" style={{width:"20px"}}>161.78</div>
-                <div className="cell" style={{width:"100px"}}><AiFillCaretUp className='stock up'/>1.42%</div>
-                <div className="cell" style={{width:"130px"}}>548,768,200,000</div>
-                <div className="cell" style={{width:"120px"}}><ImPriceTag style={{margin:"0 .75rem"}}/>93% Buy</div>
+                <div className="cell" style={{ width: "20px" }}>FB</div>
+                <div className="cell" style={{ width: "20px" }}>161.78</div>
+                <div className="cell" style={{ width: "100px" }}><AiFillCaretUp className='stock up' />1.42%</div>
+                <div className="cell" style={{ width: "130px" }}>548,768,200,000</div>
+                <div className="cell" style={{ width: "120px" }}><ImPriceTag style={{ margin: "0 .75rem" }} />93% Buy</div>
             </div>
 
             <div className="table-row">
                 <div className="cell-grow">Twitter</div>
-                <div className="cell" style={{width:"20px"}}>TWTR</div>
-                <div className="cell" style={{width:"20px"}}>41.93</div>
-                <div className="cell" style={{width:"100px"}}><AiFillCaretDown className='stock down'/>1.75%</div>
-                <div className="cell" style={{width:"130px"}}>30,991,444,800</div>
-                <div className="cell" style={{width:"120px"}}><ImPriceTag  style={{margin:"0 .75rem"}}/>22% Buy</div>
+                <div className="cell" style={{ width: "20px" }}>TWTR</div>
+                <div className="cell" style={{ width: "20px" }}>41.93</div>
+                <div className="cell" style={{ width: "100px" }}><AiFillCaretDown className='stock down' />1.75%</div>
+                <div className="cell" style={{ width: "130px" }}>30,991,444,800</div>
+                <div className="cell" style={{ width: "120px" }}><ImPriceTag style={{ margin: "0 .75rem" }} />22% Buy</div>
             </div>
 
             <div className="table-row">
                 <div className="cell-grow">Snap</div>
-                <div className="cell" style={{width:"20px"}}>SNAP</div>
-                <div className="cell" style={{width:"20px"}}>13.10</div>
-                <div className="cell" style={{width:"100px"}}><AiFillCaretUp className='stock up'/>0.15%</div>
-                <div className="cell" style={{width:"130px"}}>16,408,062,100</div>
-                <div className="cell" style={{width:"120px"}}><ImPriceTag  style={{margin:"0 .75rem"}}/>18% Buy</div>
-            </div>
+                <div className="cell" style={{ width: "20px" }}>SNAP</div>
+                <div className="cell" style={{ width: "20px" }}>13.10</div>
+                <div className="cell" style={{ width: "100px" }}><AiFillCaretUp className='stock up' />0.15%</div>
+                <div className="cell" style={{ width: "130px" }}>16,408,062,100</div>
+                <div className="cell" style={{ width: "120px" }}><ImPriceTag style={{ margin: "0 .75rem" }} />18% Buy</div>
+            </div> */}
+            {
+                dowStocks?.map((stock, i) => {
+                    return (
+                        <div className="table-row" key={i}>
+                            <div className="cell-grow">{stock.name}</div>
+                            <div className="cell" style={{ width: "20px" }}>{stock.symbol}</div>
+                            <div className="cell" style={{ width: "20px" }}>{stock.price}</div>
+                            <div className="cell" style={{ width: "100px" }}>{stock.today > 0 ? <AiFillCaretUp className='stock up' /> : <AiFillCaretDown className='stock down' />}{Math.abs(stock.today)}%</div>
+                            <div className="cell" style={{ width: "130px" }}>{stock.marketCap}</div>
+                            <div className="cell" style={{ width: "120px" }}><ImPriceTag style={{ margin: "0 .75rem" }} />{stock.analystRating}% Buy</div>
+                        </div>
+                    )
+                })
+            }
         </Container>
     )
 }
 
 export const Container = styled.div`
-  height: 75vh;
+  min-height: 75vh;
   max-width: 1400px;
+  min-width: 780px;
   margin: auto;
   /* width: 100%; */
   padding: 2rem 2rem;
