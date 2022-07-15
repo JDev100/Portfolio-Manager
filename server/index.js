@@ -8,6 +8,9 @@ require('dotenv').config()
 app.use(cors())
 app.use(express.json())
 
+app.get('/', (req, res) => {
+    res.send('Hello World')
+})
 //API Routes
 app.use('/api/stocks', stockRoutes)
 
