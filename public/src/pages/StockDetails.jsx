@@ -1,10 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { getStockDetailsRoute } from '../utils/APIRoutes'
 
-const StockDetails = ({ match }) => {
+const StockDetails = () => {
     const { stockid } = useParams()
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [stockDetails, setStockDetails] = useState(null)
+    useEffect(() => {
+        async function action() {
+            // console.log(dowStocks)
+
+            const response = await axios.get(`${getStockDetailsRoute}/${stockid}`)
+            console.log(response.data)
+            setStockDetails(response.data)
+            setIsLoading(false)
+        }
+        action()
+    }, [stockid])
     return (
         <Container>
             {!isLoading && (
