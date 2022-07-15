@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import axios from 'axios'
 import { getDowRoute } from '../utils/APIRoutes'
@@ -33,20 +34,20 @@ const Home = () => {
 
     useEffect(() => {
         async function action() {
-            console.log(dowStocks)
-            
+            // console.log(dowStocks)
+
             const response = await axios.post(getDowRoute, {
-                dow: Dow.DOW.slice(index, index+5)
+                dow: Dow.DOW.slice(index, index + 5)
             })
             // var oldStocks = dowStocks
             // oldStocks.concat(response.data)
             const oldStocks = [dowStocks, response.data]
             setDowStocks((prevState) => [...prevState, ...response.data])
-            setIndex((prevIndex) => prevIndex+5)
-            console.log(oldStocks)
+            setIndex((prevIndex) => prevIndex + 5)
+            // console.log(oldStocks)
         }
         if (index < Dow.DOW.length)
-        action()
+            action()
     }, [index])
 
     return (
@@ -95,7 +96,9 @@ const Home = () => {
                 dowStocks?.map((stock, i) => {
                     return (
                         <div className="table-row" key={i}>
-                            <div className="cell-grow">{stock.name}</div>
+                            <Link className="cell-grow" to = {`/stockdetails/${stock.symbol}`}>
+                                <div >{stock.name}</div>
+                            </Link>
                             <div className="cell" style={{ width: "20px" }}>{stock.symbol}</div>
                             <div className="cell" style={{ width: "20px" }}>{stock.price}</div>
                             <div className="cell" style={{ width: "100px" }}>{stock.today > 0 ? <AiFillCaretUp className='stock up' /> : <AiFillCaretDown className='stock down' />}{Math.abs(stock.today)}%</div>
@@ -116,6 +119,14 @@ export const Container = styled.div`
   margin: auto;
   /* width: 100%; */
   padding: 2rem 2rem;
+
+  a {
+    text-decoration: none;
+    color: white;
+    &:hover {
+        text-decoration: underline;
+    }
+  }
 
   .stock {
     margin-right: .75rem;
