@@ -19,16 +19,25 @@ const StockDetails = () => {
         }
         action()
     }, [stockid])
+
+    function getDateFromInt(date) {
+        var timestamp = Date.parse(date)
+        console.log(timestamp)
+        var d = new Date(parseInt(date))
+        console.log(d )
+        return d.toLocaleString('default', {month:'short'}) + " " + d.getUTCDay() + ", " + d.getUTCFullYear ()
+    }
+
     return (
         <Container>
             {!isLoading && (
                 <>
-                    <div className="main-header">
+                    <div className={`main-header ${stockDetails.today < 0 ? 'red' : 'green'}`}>
                         <div className="bar"></div>
                         <div className="stock-info-main">
-                            <h2>APPLE INC.</h2>
+                            <h2>{stockDetails.name}</h2>
 
-                            <h1>149.16 <span className='change'>+0.69</span> <span className='changePcnt'>(+0.46%)</span></h1>
+                            <h1>{stockDetails.price} <span className='change'>{stockDetails.today < 0 ? '' : '+'}{stockDetails.today}</span> <span className='changePcnt'>({stockDetails.today < 0 ? '' : '+'}{stockDetails.todayPcnt}%)</span></h1>
                         </div>
                         <div className='button-section'>
                             <button>Add to watchlist</button>
@@ -36,64 +45,64 @@ const StockDetails = () => {
                     </div>
 
                     <div className="header">
-                        <h3>AAPL Stock Summary</h3>
+                        <h3>{stockDetails.symbol} Stock Summary</h3>
                     </div>
                     <div className="stock-summary">
                         <div className="left">
                             <div className="table-left">
                                 <div className="table-row">
                                     <p>Previous Close</p>
-                                    <strong>44.14</strong>
+                                    <strong>{stockDetails.previousClose}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>Open</p>
-                                    <strong>47.00</strong>
+                                    <strong>{stockDetails.open}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>Bid</p>
-                                    <strong>50.36</strong>
+                                    <strong>{stockDetails.bid}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>Ask</p>
-                                    <strong>50.35</strong>
+                                    <strong>{stockDetails.ask}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>Day's Range</p>
-                                    <strong>46.19 - 50.61</strong>
+                                    <strong>{stockDetails.dayLow} - {stockDetails.dayHigh}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>52 Week Range</p>
-                                    <strong>43.44-74.64</strong>
+                                    <strong>{stockDetails.fiftyTwoWeekLow} - {stockDetails.fiftyTwoWeekHigh}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>Volume</p>
-                                    <strong>71,529,529</strong>
+                                    <strong>{stockDetails.volume}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>Avg. Volume</p>
-                                    <strong>23,268,567</strong>
+                                    <strong>{stockDetails.averageVolume}</strong>
                                 </div>
                             </div>
                             <div className="table-right">
                                 <div className="table-row">
                                     <p>Market Cap</p>
-                                    <strong>99.64B</strong>
+                                    <strong>{stockDetails.marketCap}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>Beta (5Y Monthly)</p>
-                                    <strong>1.67</strong>
+                                    <strong>{stockDetails.beta}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>PE Ratio (TTM)</p>
-                                    <strong>4.76</strong>
+                                    <strong>{stockDetails.trailingPE}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>EPS (TTM)</p>
-                                    <strong>10.56</strong>
+                                    <strong>{stockDetails.trailingEps}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>Earnings Date</p>
-                                    <strong>Jul 15, 2022</strong>
+                                    <strong>{getDateFromInt(stockDetails.earningsDate)}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>Forward Dividend & Yield</p>
@@ -154,8 +163,26 @@ export const Container = styled.div`
             color: #34c370;
         }
     }
+    &.green  {
+        .bar {
+          background-color: #34c370;
+
+        }
+        .changePcnt {
+            color: #34c370;
+        }
+    }
+    &.red {
+        .bar {
+          background-color: #ff433d;
+
+        }
+        .changePcnt {
+            color: #ff433d;
+        }
+    }
     .bar {
-        background-color: #34c370;
+        /* background-color: #34c370; */
         /* background-color: #ff433d; */
         width: .9rem;
     }
