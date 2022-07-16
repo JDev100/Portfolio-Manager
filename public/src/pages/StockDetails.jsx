@@ -27,6 +27,14 @@ const StockDetails = () => {
         console.log(d )
         return d.toLocaleString('default', {month:'short'}) + " " + d.getUTCDay() + ", " + d.getUTCFullYear ()
     }
+    function getDateFromEncoding(date) {
+        // var timestamp = Date.parse(date)
+        // console.log(timestamp)
+        var d = new Date(date)
+        console.log(d )
+        return d.toLocaleString('default', {month:'short'}) + " " + d.getUTCDay() + ", " + d.getUTCFullYear ()
+    }
+
 
     return (
         <Container>
@@ -106,24 +114,23 @@ const StockDetails = () => {
                                 </div>
                                 <div className="table-row">
                                     <p>Forward Dividend & Yield</p>
-                                    <strong>2.04(4.28%)</strong>
+                                    <strong>{stockDetails.dividendYield}({stockDetails.dividendRate}%)</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>Ex-Dividend Date</p>
-                                    <strong>Apr 29, 2022</strong>
+                                    <strong>{getDateFromEncoding(stockDetails.exDividendDate)}</strong>
                                 </div>
                                 <div className="table-row">
                                     <p>1yr Target Est</p>
-                                    <strong>66.45</strong>
+                                    <strong>{stockDetails.targetPrice}</strong>
                                 </div>
                             </div>
 
                         </div>
                         <div className="right">
-                            <h1>po</h1>
+                            {/* <h1>po</h1> */}
                         </div>
                     </div>
-                    <h1>{stockid}</h1>
                 </>
             )}
         </Container>
@@ -215,7 +222,8 @@ export const Container = styled.div`
     
     .left {
         gap: 1rem;
-        width: 50%;
+        /* width: 50%; */
+        width: 100%;
         display: flex;
         .table-left, .table-right {
             width: 50%;
