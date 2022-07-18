@@ -36,15 +36,30 @@ const Home = () => {
         async function action() {
             // console.log(dowStocks)
 
-            const response = await axios.post(getDowRoute, {
-                dow: Dow.DOW.slice(index, index + 5)
+            // const response = await axios.post(getDowRoute, {
+            //     dow: Dow.DOW.slice(index, index + 5)
+            // })
+            fetch(getDowRoute, {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
+                //make sure to serialize your JSON body
+                body: JSON.stringify({
+                    dow: Dow.DOW.slice(index, index + 5)
+                })
             })
-            // var oldStocks = dowStocks
-            // oldStocks.concat(response.data)
-            const oldStocks = [dowStocks, response.data]
-            setDowStocks((prevState) => [...prevState, ...response.data])
-            setIndex((prevIndex) => prevIndex + 5)
-            // console.log(oldStocks)
+                .then((response) => {
+                    //do something awesome that makes the world a better place
+                    return response.json()
+                })
+                .then(data => {
+                    setDowStocks((prevState) => [...prevState, ...data])
+                    console.log(data)
+                    setIndex((prevIndex) => prevIndex + 5)
+                });
         }
         if (index < Dow.DOW.length)
             action()
@@ -72,7 +87,7 @@ const Home = () => {
                 dowStocks?.map((stock, i) => {
                     return (
                         <div className="table-row" key={i}>
-                            <Link className="cell-grow" to = {`/stockdetails/${stock.symbol}`}>
+                            <Link className="cell-grow" to={`/stockdetails/${stock.symbol}`}>
                                 <div >{stock.name}</div>
                             </Link>
                             <div className="cell" style={{ width: "20px" }}>{stock.symbol}</div>

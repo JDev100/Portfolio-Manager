@@ -11,11 +11,12 @@ const StockDetails = () => {
     useEffect(() => {
         async function action() {
             // console.log(dowStocks)
-
-            const response = await axios.get(`${getStockDetailsRoute}/${stockid}`)
-            console.log(response.data)
-            setStockDetails(response.data)
-            setIsLoading(false)
+            fetch(`${getStockDetailsRoute}/${stockid}`)
+                .then(response => response.json())
+                .then(data => {
+                    setStockDetails(data)
+                    setIsLoading(false)
+                });
         }
         action()
     }, [stockid])
@@ -24,15 +25,15 @@ const StockDetails = () => {
         var timestamp = Date.parse(date)
         console.log(timestamp)
         var d = new Date(parseInt(date))
-        console.log(d )
-        return d.toLocaleString('default', {month:'short'}) + " " + d.getUTCDay() + ", " + d.getUTCFullYear ()
+        console.log(d)
+        return d.toLocaleString('default', { month: 'short' }) + " " + d.getUTCDay() + ", " + d.getUTCFullYear()
     }
     function getDateFromEncoding(date) {
         // var timestamp = Date.parse(date)
         // console.log(timestamp)
         var d = new Date(date)
-        console.log(d )
-        return d.toLocaleString('default', {month:'short'}) + " " + d.getUTCDay() + ", " + d.getUTCFullYear ()
+        console.log(d)
+        return d.toLocaleString('default', { month: 'short' }) + " " + d.getUTCDay() + ", " + d.getUTCFullYear()
     }
 
 

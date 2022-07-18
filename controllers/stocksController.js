@@ -71,6 +71,7 @@ module.exports.getStockDetails = async (req, res, next) => {
         symbol: stockid,
         modules: ['price',  'summaryDetail', 'defaultKeyStatistics', 'calendarEvents', 'financialData']       // optional; default modules.
     }, (err, quote) => {
+        console.log(quote)
         data = {
             name: quote.price.shortName,
             symbol: quote.price.symbol,
