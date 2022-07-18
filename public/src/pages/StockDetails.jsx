@@ -3,22 +3,25 @@ import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { getStockDetailsRoute } from '../utils/APIRoutes'
+import Summary from '../components/Summary'
 
 const StockDetails = () => {
     const { stockid } = useParams()
     const [isLoading, setIsLoading] = useState(true);
     const [stockDetails, setStockDetails] = useState(null)
     useEffect(() => {
-        async function action() {
-            // console.log(dowStocks)
-            fetch(`${getStockDetailsRoute}/${stockid}`)
-                .then(response => response.json())
-                .then(data => {
-                    setStockDetails(data)
-                    setIsLoading(false)
-                });
-        }
-        action()
+        // async function action() {
+        //     // console.log(dowStocks)
+        // }
+        fetch(`${getStockDetailsRoute}/${stockid}`, {
+            method: 'get'
+        })
+            .then(response => response.json())
+            .then(data => {
+                setStockDetails(data)
+                setIsLoading(false)
+            });
+        // action()
     }, [stockid])
 
     function getDateFromInt(date) {
@@ -56,7 +59,8 @@ const StockDetails = () => {
                     <div className="header">
                         <h3>{stockDetails.symbol} Stock Summary</h3>
                     </div>
-                    <div className="stock-summary">
+                    <Summary stockDetails={stockDetails} />
+                    {/* <div className="stock-summary">
                         <div className="left">
                             <div className="table-left">
                                 <div className="table-row">
@@ -130,8 +134,8 @@ const StockDetails = () => {
                         </div>
                         <div className="right">
                             {/* <h1>po</h1> */}
-                        </div>
-                    </div>
+                    {/* </div> */}
+                    {/* </div> */}
                 </>
             )}
         </Container>
