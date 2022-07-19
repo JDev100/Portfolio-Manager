@@ -93,8 +93,8 @@ module.exports.getStockDetails = async (req, res, next) => {
             trailingPE: parseFloat(quote.summaryDetail.trailingPE.toFixed(2)),
             trailingEps: quote.defaultKeyStatistics.trailingEps.toFixed(2),
             earningsDate: quote.calendarEvents.earnings.earningsDate,
-            dividendYield: quote.summaryDetail.dividendYield.toFixed(2),
-            dividendRate: quote.summaryDetail.dividendRate,
+            dividendYield: parseFloat(quote.summaryDetail.trailingAnnualDividendYield.toFixed(2)),
+            dividendRate: quote.summaryDetail.trailingAnnualDividendRate,
             exDividendDate: quote.summaryDetail.exDividendDate,
             targetPrice: quote.financialData.targetMedianPrice
         }
