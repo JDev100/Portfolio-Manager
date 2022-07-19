@@ -8,6 +8,7 @@ import Summary from '../components/Summary'
 const StockDetails = () => {
     const { stockid } = useParams()
     const [isLoading, setIsLoading] = useState(true);
+    const [isGrowing, setIsGrowing] = useState(true);
     const [stockDetails, setStockDetails] = useState(null)
     useEffect(() => {
         // async function action() {
@@ -18,11 +19,15 @@ const StockDetails = () => {
         })
             .then(response => response.json())
             .then(data => {
+
                 setStockDetails(data)
                 setIsLoading(false)
+
+                if (data.today < 0)
+                setIsGrowing(false)
             });
         // action()
-    }, [stockid])
+    }, [])
 
     function getDateFromInt(date) {
         var timestamp = Date.parse(date)
@@ -59,83 +64,8 @@ const StockDetails = () => {
                     <div className="header">
                         <h3>{stockDetails.symbol} Stock Summary</h3>
                     </div>
-                    <Summary stockDetails={stockDetails} />
-                    {/* <div className="stock-summary">
-                        <div className="left">
-                            <div className="table-left">
-                                <div className="table-row">
-                                    <p>Previous Close</p>
-                                    <strong>{stockDetails.previousClose}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>Open</p>
-                                    <strong>{stockDetails.open}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>Bid</p>
-                                    <strong>{stockDetails.bid}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>Ask</p>
-                                    <strong>{stockDetails.ask}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>Day's Range</p>
-                                    <strong>{stockDetails.dayLow} - {stockDetails.dayHigh}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>52 Week Range</p>
-                                    <strong>{stockDetails.fiftyTwoWeekLow} - {stockDetails.fiftyTwoWeekHigh}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>Volume</p>
-                                    <strong>{stockDetails.volume}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>Avg. Volume</p>
-                                    <strong>{stockDetails.averageVolume}</strong>
-                                </div>
-                            </div>
-                            <div className="table-right">
-                                <div className="table-row">
-                                    <p>Market Cap</p>
-                                    <strong>{stockDetails.marketCap}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>Beta (5Y Monthly)</p>
-                                    <strong>{stockDetails.beta}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>PE Ratio (TTM)</p>
-                                    <strong>{stockDetails.trailingPE}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>EPS (TTM)</p>
-                                    <strong>{stockDetails.trailingEps}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>Earnings Date</p>
-                                    <strong>{getDateFromInt(stockDetails.earningsDate)}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>Forward Dividend & Yield</p>
-                                    <strong>{stockDetails.dividendYield}({stockDetails.dividendRate}%)</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>Ex-Dividend Date</p>
-                                    <strong>{getDateFromEncoding(stockDetails.exDividendDate)}</strong>
-                                </div>
-                                <div className="table-row">
-                                    <p>1yr Target Est</p>
-                                    <strong>{stockDetails.targetPrice}</strong>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div className="right">
-                            {/* <h1>po</h1> */}
-                    {/* </div> */}
-                    {/* </div> */}
+                    <Summary stockDetails={stockDetails} growing={isGrowing} />
+                   
                 </>
             )}
         </Container>

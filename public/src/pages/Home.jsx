@@ -40,7 +40,7 @@ const Home = () => {
             //     dow: Dow.DOW.slice(index, index + 5)
             // })
             fetch(getDowRoute, {
-                method: "post",
+                method: "post", 
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'

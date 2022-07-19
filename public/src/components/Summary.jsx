@@ -1,21 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import {
+    FlexibleXYPlot,
+    FlexibleWidthXYPlot,
+    XYPlot,
+    XAxis,
+    YAxis,
+    VerticalGridLines,
+    HorizontalGridLines,
+    LineSeries,
+    AreaSeries,
+    Crosshair
+} from 'react-vis';
 
-const Summary = ({ stockDetails }) => {
+const Summary = ({ stockDetails, growing }) => {
     function getDateFromInt(date) {
         var timestamp = Date.parse(date)
-        console.log(timestamp)
+        // console.log(timestamp)
         var d = new Date(parseInt(date))
-        console.log(d)
+        // console.log(d)
         return d.toLocaleString('default', { month: 'short' }) + " " + d.getUTCDay() + ", " + d.getUTCFullYear()
     }
     function getDateFromEncoding(date) {
         // var timestamp = Date.parse(date)
         // console.log(timestamp)
         var d = new Date(date)
-        console.log(d)
+        // console.log(d)
         return d.toLocaleString('default', { month: 'short' }) + " " + d.getUTCDay() + ", " + d.getUTCFullYear()
     }
+
+    //For the chart
+    const DATA = [
+        [{ x: 1, y: 10 }, { x: 2, y: 5 }, { x: 3, y: 15 }],
+        // [{ x: 1, y: 20 }, { x: 2, y: 5 }, { x: 3, y: 15 }]
+    ];
+
+    const _onMouseLeave = () => {
+        setCrossHairValues([])
+    };
+    const _onNearestX = (value, { index }) => {
+        setCrossHairValues(DATA.map(d => d[index]))
+        // ({ crosshairValues: DATA.map(d => d[index]) });
+    };
+
+    const [crossHairValues, setCrossHairValues] = useState([])
     return (
         <Container>
             <div className="left">
@@ -90,7 +118,24 @@ const Summary = ({ stockDetails }) => {
 
             </div>
             <div className="right">
-                <h1>po</h1>
+                {/* <h1>po</h1> */}
+                <FlexibleXYPlot onMouseLeave={_onMouseLeave}>
+                    <VerticalGridLines />
+                    <HorizontalGridLines />
+                    <XAxis />
+                    <YAxis />
+                    <AreaSeries
+                        className="area-series-example"
+                        // curve="curveNatural"
+                        onNearestX={_onNearestX}
+                        color= {growing ? '#34c370' : '#ff433d'}
+                        data={DATA[0]}
+                    />
+                    <Crosshair
+                        values={crossHairValues}
+                        className={'area-series-example'}
+                    />
+                </FlexibleXYPlot>
             </div>
 
         </Container>
@@ -126,8 +171,12 @@ export const Container = styled.div`
             padding: 1rem 0;
         }
     }
+    .right {
+        width: 48%;
+        height: 450px;
+    }
     @media (max-width: 1200px) {
-    .left {
+    .left, .right {
         width: 100%;
     }
   }
