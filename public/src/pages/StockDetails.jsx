@@ -10,6 +10,7 @@ const StockDetails = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isGrowing, setIsGrowing] = useState(true);
     const [stockDetails, setStockDetails] = useState(null)
+    const [graphData, setGraphData] = useState([{ x: 1, y: 10 }, { x: 2, y: 5 }, { x: 3, y: 15 }])
     useEffect(() => {
         // async function action() {
         //     // console.log(dowStocks)
@@ -19,10 +20,22 @@ const StockDetails = () => {
         })
             .then(response => response.json())
             .then(data => {
-
+                console.log(data)
                 setStockDetails(data)
                 setIsLoading(false)
 
+                //Set graph data for chart
+                var historyData = []
+                data.historical.map((quote, index) => {
+                    console.log(quote)
+                    historyData.push({
+                        x: index,
+                        y: quote.open
+                    })
+                })
+                console.log(historyData)
+                setGraphData(historyData)
+                //Set Color for graphs and such
                 if (data.today < 0)
                 setIsGrowing(false)
             });
@@ -64,7 +77,7 @@ const StockDetails = () => {
                     <div className="header">
                         <h3>{stockDetails.symbol} Stock Summary</h3>
                     </div>
-                    <Summary stockDetails={stockDetails} growing={isGrowing} />
+                    <Summary stockDetails={stockDetails} growing={isGrowing} graphData={graphData}/>
                    
                 </>
             )}

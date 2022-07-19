@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import {
     FlexibleXYPlot,
@@ -13,7 +13,7 @@ import {
     Crosshair
 } from 'react-vis';
 
-const Summary = ({ stockDetails, growing }) => {
+const Summary = ({ stockDetails, growing, graphData }) => {
     function getDateFromInt(date) {
         var timestamp = Date.parse(date)
         // console.log(timestamp)
@@ -29,9 +29,11 @@ const Summary = ({ stockDetails, growing }) => {
         return d.toLocaleString('default', { month: 'short' }) + " " + d.getUTCDay() + ", " + d.getUTCFullYear()
     }
 
+    // const [graphData, setGraphData] = useState([{ x: 1, y: 10 }, { x: 2, y: 5 }, { x: 3, y: 15 }])
+
     //For the chart
     const DATA = [
-        [{ x: 1, y: 10 }, { x: 2, y: 5 }, { x: 3, y: 15 }],
+        [{ x: 1, y: 10 }, { x: 2, y: 5 }, { x: 3, y: 15 }]
         // [{ x: 1, y: 20 }, { x: 2, y: 5 }, { x: 3, y: 15 }]
     ];
 
@@ -118,23 +120,23 @@ const Summary = ({ stockDetails, growing }) => {
 
             </div>
             <div className="right">
-                {/* <h1>po</h1> */}
-                <FlexibleXYPlot onMouseLeave={_onMouseLeave}>
+                <h3>Month Data</h3>
+                <FlexibleXYPlot onMouseLeave={_onMouseLeave} height={425}>
                     <VerticalGridLines />
                     <HorizontalGridLines />
-                    <XAxis />
+                    {/* <XAxis /> */}
                     <YAxis />
                     <AreaSeries
                         className="area-series-example"
                         // curve="curveNatural"
                         onNearestX={_onNearestX}
                         color= {growing ? '#34c370' : '#ff433d'}
-                        data={DATA[0]}
+                        data={graphData}
                     />
-                    <Crosshair
+                    {/* <Crosshair
                         values={crossHairValues}
-                        className={'area-series-example'}
-                    />
+                        className={'test-class-name'}
+                    /> */}
                 </FlexibleXYPlot>
             </div>
 
@@ -172,8 +174,11 @@ export const Container = styled.div`
         }
     }
     .right {
+        h3 {
+            margin-top: 0;
+        }
         width: 48%;
-        height: 450px;
+        /* height: 450px; */
     }
     @media (max-width: 1200px) {
     .left, .right {

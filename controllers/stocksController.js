@@ -3,7 +3,7 @@ var humanize = require('humanize-plus')
 function calculateAnalystTrend(trend) {
     // console.log(trend.buy + trend.strongBuy)
     // console.log(trend.sell + trend.strongSell + trend.hold + trend.buy + trend.strongBuy)
-    return parseInt(parseFloat(trend.buy + trend.strongBuy) / parseFloat(((trend.buy+trend.sell + trend.strongBuy + trend.strongSell + trend.hold))) * 100)
+    return parseInt(parseFloat(trend.buy + trend.strongBuy) / parseFloat(((trend.buy + trend.sell + trend.strongBuy + trend.strongSell + trend.hold))) * 100)
 }
 
 //From https://stackoverflow.com/questions/25416635/display-number-with-significant-figures-and-k-m-b-t-suffix-in-javascript
@@ -27,12 +27,21 @@ function sigfig(num, sigfigs_opt) {
     var base = num / suffixPower10;
     var baseRound = base.toPrecision(sigfigs_opt);
     return baseRound + suffix;
-  }
-  
-  function log10(num) {
+}
+
+function log10(num) {
     // Per http://stackoverflow.com/questions/3019278/how-can-i-specify-the-base-for-math-log-in-javascript#comment29970629_16868744
     // Handles floating-point errors log10(1000) otherwise fails at (2.99999996)
     return (Math.round(Math.log(num) / Math.LN10 * 1e6) / 1e6);
+}
+
+//Helper for getting week worth of stock info
+function getDateXDaysAgo(numOfDays, date = new Date()) {
+    const daysAgo = new Date(date.getTime());
+  
+    daysAgo.setDate(date.getDate() - numOfDays);
+  
+    return daysAgo;
   }
   
 
@@ -45,7 +54,7 @@ module.exports.getDow = async (req, res, next) => {
             // console.log(dow[index])
             await yahooFinance.quote({
                 symbol: dow[index],
-                modules: ['price',  'recommendationTrend', ]       // optional; default modules.
+                modules: ['price', 'recommendationTrend',]       // optional; default modules.
             }, (err, quote) => {
                 stocks.push({
                     name: quote.price.shortName,
@@ -69,9 +78,9 @@ module.exports.getStockDetails = async (req, res, next) => {
     var data = {}
     await yahooFinance.quote({
         symbol: stockid,
-        modules: ['price',  'summaryDetail', 'defaultKeyStatistics', 'calendarEvents', 'financialData']       // optional; default modules.
+        modules: ['price', 'summaryDetail', 'defaultKeyStatistics', 'calendarEvents', 'financialData']       // optional; default modules.
     }, (err, quote) => {
-        console.log(quote)
+        // console.log(quote)
         data = {
             name: quote.price.shortName,
             symbol: quote.price.symbol,
@@ -100,5 +109,26 @@ module.exports.getStockDetails = async (req, res, next) => {
         }
         // console.log(quote);
     });
+
+    const today = new Date()
+    const weekAgo = getDateXDaysAgo(30, today)
+
+    //Get Historical data
+    await yahooFinance.historical({
+        symbol: stockid,
+        from: weekAgo,
+        to: today,
+        period: 'd'
+    }, function (err, quotes) {
+        // data.historical = quotes;
+        var historical = quotes;
+        historical.sort((a, b) => a.date - b.date)
+        
+        console.log(historical)
+
+        data.historical = historical
+    })
+
+
     res.json(data)
 }
