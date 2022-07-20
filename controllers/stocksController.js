@@ -99,7 +99,7 @@ module.exports.getStockDetails = async (req, res, next) => {
             averageVolume: humanize.intComma(quote.summaryDetail.marketCap),
             marketCap: sigfig(quote.price.marketCap),
             beta: quote.summaryDetail.beta.toFixed(2),
-            trailingPE: parseFloat(quote.summaryDetail.trailingPE.toFixed(2)),
+            trailingPE: parseFloat(quote.summaryDetail.trailingPE).toFixed(2),
             trailingEps: quote.defaultKeyStatistics.trailingEps.toFixed(2),
             earningsDate: quote.calendarEvents.earnings.earningsDate,
             dividendYield: parseFloat(quote.summaryDetail.trailingAnnualDividendYield.toFixed(2)),
