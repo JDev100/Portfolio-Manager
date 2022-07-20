@@ -103,14 +103,14 @@ export default MyComponent
 3. Go to page file you want to place the component in, e.x ```MyPage.jsx```
 4. Import your component with:
 ```
-import MyComponent from './pages/MyComponent';
+import MyComponent from '../components/MyComponent';
 ```
 5. Place your component in the page like the following:
 ```
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import MyComponent from './pages/MyComponent';
+import MyComponent from '../components/MyComponent';
 
 const MyPage = () => {
   return (
