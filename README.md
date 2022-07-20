@@ -28,7 +28,7 @@ cd public
 npm start
 ```
 
-#How to run unit tests
+# How to run unit tests
 Run the following in ```root``` directory:
 ```
 npm test
