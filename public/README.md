@@ -1,4 +1,4 @@
-#Quick Start Guide to making pages/components for the front end
+# Quick Start Guide to making pages
 
 (All of the following is accomplished in ```root/public/src```)
 
@@ -71,3 +71,6 @@ import MyPage from './pages/MyPage';
 http://localhost:3000/mypage
 ```
 10. Should be like following:
+
+![jsxexample](https://user-images.githubusercontent.com/95455992/179928494-8b508123-1d84-4013-8719-c9cec6fe4626.PNG)
+
