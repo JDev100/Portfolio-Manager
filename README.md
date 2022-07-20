@@ -6,11 +6,17 @@ Deployed Version: https://jesuscazares-portfolio-manager.netlify.app/
 # How to install and run app locally in your machine
 1. Clone repository
 2. Run following command in root directory to install node packages for server
-```npm install```
-3. Go into public '''public``` directory:
-```cd public```
+```
+npm install
+```
+3. Go into ```public``` directory:
+```
+cd public
+```
 4. Run following command to install node packages for client
-```npm install```
+```
+npm install
+```
 5. Go back to root directory and run server
 ```
 cd ../
