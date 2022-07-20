@@ -66,9 +66,8 @@ import MyPage from './pages/MyPage
 ``` 
 <Route path='/mypage' element={<MyPage />} />
 ```
-7. With client running, input 
+7. With client running, input following in browser url bar
 ```
 http://localhost:3000/mypage
 ```
-in browser url bar
 10. Should be like following:
