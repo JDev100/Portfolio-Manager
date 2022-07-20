@@ -60,7 +60,7 @@ export default App;
 ```
 4. Import your page with 
 ```
-import MyPage from './pages/MyPage
+import MyPage from './pages/MyPage';
 ```
 6. Put following in designated area:
 ``` 
