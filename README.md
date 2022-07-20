@@ -15,7 +15,7 @@ cd public
 ```
 4. Run following command to install node packages for client
 ```
-npm install
+npm install --legacy-peer-deps
 ```
 5. Go back to root directory and run server
 ```
