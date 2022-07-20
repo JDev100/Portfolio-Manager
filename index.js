@@ -1,33 +1,26 @@
-const express = require("express") 
+const express = require("express")
 const cors = require('cors')
 const stockRoutes = require('./routes/stockRoutes')
 
+//Boiler plate
 const app = express()
 require('dotenv').config()
 
 app.use(cors())
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    next();
+});
 app.use(express.json())
 
-// app.get('/', (req, res) => {
-//     res.send('Hello World')
-// })
-// app.get('/greeting', (req, res) => {
-//     res.json({greeting:'hello'})
-// })
 //API Routes
 app.use('/api/stocks', stockRoutes)
 
-const PORT = 5000 || process.env.PORT;
+//Port listening
+const PORT = process.env.PORT || 5000;
 
-const server = app.listen(5000, ()=> {
-    console.log(`Server connected on Port 5000`)
-})
-
-// var yahooFinance = require('yahoo-finance');
-
-// yahooFinance.quote({
-//   symbol: 'TSLA',
-//   modules: ['price', 'summaryDetail']       // optional; default modules.
-// }, (err, quote) => {
-//   console.log(quote);
-// });
+const server = app.listen(PORT, () => {
+    console.log(`Server connected`)
+})  
