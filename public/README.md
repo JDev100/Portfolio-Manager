@@ -1,4 +1,5 @@
 #Quick Start Guide to making pages/components for the front end
+
 (All of the following is accomplished in ```root/public/src```)
 
 ##Making a new page
