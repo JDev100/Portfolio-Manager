@@ -59,8 +59,15 @@ export default App;
 
 ```
 4. Import your page with 
-```import MyPage from './pages/MyPage```
+```
+import MyPage from './pages/MyPage
+```
 6. Put following in designated area:
-``` <Route path='/mypage' element={<MyPage />} />```
-7. With client running, input ```http://localhost:3000/mypage``` in browser url bar
-8. Should be like following:
+``` 
+<Route path='/mypage' element={<MyPage />} />
+```
+7. With client running, input 
+8. ```
+9. http://localhost:3000/mypage
+``` in browser url bar
+10. Should be like following:
