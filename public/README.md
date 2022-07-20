@@ -138,3 +138,6 @@ export default MyPage
 ```
 
 6. Should look like following:
+
+![jsxexample2](https://user-images.githubusercontent.com/95455992/179938811-c670d386-7274-4ff2-90be-d0915e0f9563.PNG)
+
