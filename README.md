@@ -22,7 +22,7 @@ npm install
 cd ../
 npm start
 ```
-6. Open new terminal and go to public command and run client
+6. Open new terminal and go to ```public``` directory and run this command to run client
 ```
 cd public
 npm start
