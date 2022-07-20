@@ -1,6 +1,6 @@
 # Quick Start Guide to making pages
 
-(All of the following is accomplished in ```root/public/src```)
+> (All of the following is accomplished in ```root/public/src```)
 
 ## Making a new page
 1. In  ```./pages``` directory make a new jsx file like ```MyPage.jsx```
