@@ -2,6 +2,10 @@
 Node.js project that employs Yahoo Finance API for a stock portfolio management system
 
 Deployed Version: https://jesuscazares-portfolio-manager.netlify.app/
+![jsxexample3](https://user-images.githubusercontent.com/95455992/179945011-0ad61ae9-6c8b-4465-bf24-de5080c54676.PNG)
+![jsxexample4](https://user-images.githubusercontent.com/95455992/179945019-180b9993-d543-437d-9a76-0858a76c42d2.PNG)
+
+
 
 # How to install and run app locally in your machine
 1. Clone repository
