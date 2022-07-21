@@ -1,10 +1,6 @@
 var yahooFinance = require('yahoo-finance');
 var humanize = require('humanize-plus')
-function calculateAnalystTrend(trend) {
-    // console.log(trend.buy + trend.strongBuy)
-    // console.log(trend.sell + trend.strongSell + trend.hold + trend.buy + trend.strongBuy)
-    return parseInt(parseFloat(trend.buy + trend.strongBuy) / parseFloat(((trend.buy + trend.sell + trend.strongBuy + trend.strongSell + trend.hold))) * 100)
-}
+var stockDetails = require('../utils/stockDetails')
 
 //From https://stackoverflow.com/questions/25416635/display-number-with-significant-figures-and-k-m-b-t-suffix-in-javascript
 // Calculates significant figures with suffixes K/M/B/T, e.g. 1234 = 1.23K
@@ -38,12 +34,12 @@ function log10(num) {
 //Helper for getting week worth of stock info
 function getDateXDaysAgo(numOfDays, date = new Date()) {
     const daysAgo = new Date(date.getTime());
-  
+
     daysAgo.setDate(date.getDate() - numOfDays);
-  
+
     return daysAgo;
-  }
-  
+}
+
 
 module.exports.getDow = async (req, res, next) => {
     try {
@@ -51,22 +47,12 @@ module.exports.getDow = async (req, res, next) => {
 
         const stocks = []
         for (let index = 0; index < dow.length; index++) {
-            // console.log(dow[index])
-            await yahooFinance.quote({
-                symbol: dow[index],
-                modules: ['price', 'recommendationTrend',]       // optional; default modules.
-            }, (err, quote) => {
-                stocks.push({
-                    name: quote.price.shortName,
-                    symbol: quote.price.symbol,
-                    price: quote.price.regularMarketPrice,
-                    today: parseFloat((quote.price.regularMarketChangePercent * 100).toFixed(2)),
-                    marketCap: humanize.intComma(quote.price.marketCap),
-                    analystRating: calculateAnalystTrend(quote.recommendationTrend.trend[0])
-                })
-                // console.log(quote);
-            });
+            
+            var data = await stockDetails.getQuote(dow[index])
+
+            stocks.push(data)
         }
+        
         res.json(stocks)
     } catch (error) {
         next(error)
@@ -86,7 +72,7 @@ module.exports.getStockDetails = async (req, res, next) => {
             symbol: quote.price.symbol,
             price: quote.price.regularMarketPrice,
             today: parseFloat(quote.price.regularMarketChange.toFixed(2)),
-            todayPcnt: parseFloat((quote.price.regularMarketChangePercent * 100).toFixed(2)),
+            todayPcnt: parseFloat((quote.price.regularMarketChangePercent * 100)).toFixed(2),
             previousClose: quote.summaryDetail.previousClose,
             open: quote.summaryDetail.open,
             bid: quote.summaryDetail.bid,
@@ -98,16 +84,15 @@ module.exports.getStockDetails = async (req, res, next) => {
             volume: humanize.intComma(quote.summaryDetail.volume),
             averageVolume: humanize.intComma(quote.summaryDetail.marketCap),
             marketCap: sigfig(quote.price.marketCap),
-            beta: quote.summaryDetail.beta.toFixed(2),
+            beta: parseFloat(quote.summaryDetail.beta).toFixed(2),
             trailingPE: parseFloat(quote.summaryDetail.trailingPE).toFixed(2),
-            trailingEps: quote.defaultKeyStatistics.trailingEps.toFixed(2),
+            trailingEps: parseFloat(quote.defaultKeyStatistics.trailingEps).toFixed(2),
             earningsDate: quote.calendarEvents.earnings.earningsDate,
-            dividendYield: parseFloat(quote.summaryDetail.trailingAnnualDividendYield.toFixed(2)),
+            dividendYield: parseFloat(quote.summaryDetail.trailingAnnualDividendYield).toFixed(2),
             dividendRate: quote.summaryDetail.trailingAnnualDividendRate,
             exDividendDate: quote.summaryDetail.exDividendDate,
             targetPrice: quote.financialData.targetMedianPrice
         }
-        // console.log(quote);
     });
 
     const today = new Date()
@@ -120,10 +105,9 @@ module.exports.getStockDetails = async (req, res, next) => {
         to: today,
         period: 'd'
     }, function (err, quotes) {
-        // data.historical = quotes;
         var historical = quotes;
         historical.sort((a, b) => a.date - b.date)
-        
+
         console.log(historical)
 
         data.historical = historical

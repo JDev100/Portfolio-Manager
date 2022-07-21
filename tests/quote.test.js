@@ -1,10 +1,11 @@
 const stockDetails = require('../utils/stockDetails')
 
 
-describe('Yahoo API call with Ticker should return same Ticker', () => {
+describe('Yahoo API call with gets valid quote', () => {
 
-    it('should return valid data', async () => {
+    it('Name and ticker returned from data is valid according to passed parameter', async () => {
         let res = await stockDetails.getQuote('AAPL')
-        expect(res).toBe('AAPL');
+        expect(res.symbol).toBe('AAPL');
+        expect(res.name).toBe('Apple Inc.')
     });
 })
