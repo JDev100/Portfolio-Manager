@@ -25,4 +25,14 @@ async function getQuote(ticker) {
     return data
 }
 
+async function getQuoteManual(ticker) {
+    var data = {}
+    
+    //YOU CAN DO MANUAL API CALL TO YAHOO FINANCE API
+    //AND RETURN DATA 
+
+    return data
+}
+
 exports.getQuote = getQuote
+exports.getQuoteManual = getQuoteManual
