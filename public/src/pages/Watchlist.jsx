@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 /* For now when the user clicks on to the watchlist  */
 
-const MyPage = () => {
+const Watchlist = () => {
   return (
     <Container>
     </Container>
@@ -16,8 +16,6 @@ export const Container = styled.div`
   min-width: 780px;
   margin: auto;
   padding: 2rem 2rem;
-  
-  /*PUT YOUR CUSTOM CSS HERE*/
 `  
 
-export default MyPage
+export default Watchlist
