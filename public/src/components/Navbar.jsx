@@ -7,8 +7,9 @@ const Navbar = () => {
             <Link to='/'>
                 <h1>Porfolio Manager</h1>
             </Link>
-            <button>Watchlist</button>
-
+            <Link to='/watchlist'>
+                <button>Watchlist</button>
+            </Link>
         </Nav>
     )
 }

@@ -57,6 +57,10 @@ const StockDetails = () => {
         return d.toLocaleString('default', { month: 'short' }) + " " + d.getUTCDay() + ", " + d.getUTCFullYear()
     }
 
+    function addToWatchList(){
+        console.log(stockDetails.symbol);
+        
+    }
 
     return (
         <Container>
@@ -70,7 +74,7 @@ const StockDetails = () => {
                             <h1>{stockDetails.price} <span className='change'>{stockDetails.today < 0 ? '' : '+'}{stockDetails.today}</span> <span className='changePcnt'>({stockDetails.today < 0 ? '' : '+'}{stockDetails.todayPcnt}%)</span></h1>
                         </div>
                         <div className='button-section'>
-                            <button>Add to watchlist</button>
+                            <button onClick={addToWatchList}>Add to watchlist</button>
                         </div>
                     </div>
 
