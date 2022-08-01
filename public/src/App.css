@@ -48,7 +48,7 @@
   color: white;
   background: #131417;
   border: 1px solid white;
-  padding:10px;
+  padding:20px;
 }
 
 .modal-content .modal-content-form {
@@ -64,6 +64,13 @@
 
 .modal-content .modal-content-form label:after {content: ":"}
 
-.ReactModalPortal .ReactModal__Overlay.ReactModal__Overlay--after-open {
-  background: rgba(0,0,0,0.5) !important;
+.modal-overlay {
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  height:100%;
+  width:100%;
+  background: rgba(0,0,0,0.75) !important;
 }

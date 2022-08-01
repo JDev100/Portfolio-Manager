@@ -97,6 +97,7 @@ const StockDetails = () => {
                         isOpen={addModalIsOpen}
                         onRequestClose={closeModal} 
                         className='modal-content' 
+                        overlayClassName='modal-overlay'
                     >
                         {/*<button className='close' onClick={closeModal}>close</button>*/}
                         <h2>Add to Watchlist</h2>
