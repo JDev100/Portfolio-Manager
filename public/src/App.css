@@ -36,3 +36,34 @@
     transform: rotate(360deg);
   }
 }
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  background: #131417;
+  border: 1px solid white;
+  padding:10px;
+}
+
+.modal-content .modal-content-form {
+  display:grid;
+  grid-template-columns: max-content max-content;
+  grid-gap:5px;
+  margin:15px;
+}
+
+.modal-content .modal-content-form label {
+  text-align: right;
+}
+
+.modal-content .modal-content-form label:after {content: ":"}
+
+.ReactModalPortal .ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background: rgba(0,0,0,0.5) !important;
+}
