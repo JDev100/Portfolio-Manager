@@ -5,7 +5,8 @@ const MyComponent = () => {
   return (
     <Container>
       {/*PUT ALL YOUR HTML AND JSX HERE*/}
-      <h2>Cool Component</h2>      
+      <h2>Cool Component</h2>
+      
     </Container>
   )    
 }

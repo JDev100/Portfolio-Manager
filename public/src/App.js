@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import StockDetails from './pages/StockDetails';
+import Watchlist from './pages/Watchlist'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/stockdetails/:stockid' element={<StockDetails />} />
+            <Route path='/watchlist/' element={<Watchlist />} />
           </Routes>
 
         

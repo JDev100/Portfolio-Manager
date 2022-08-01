@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import Modal from 'react-modal'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { getStockDetailsRoute } from '../utils/APIRoutes'
 import Summary from '../components/Summary'
 
+Modal.setAppElement('#root')
+
 const StockDetails = () => {
-    const { stockid } = useParams()
+    const { stockid } = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [isGrowing, setIsGrowing] = useState(true);
-    const [stockDetails, setStockDetails] = useState(null)
+    const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+    const [stockDetails, setStockDetails] = useState(null);
     const [graphData, setGraphData] = useState([{ x: 1, y: 10 }, { x: 2, y: 5 }, { x: 3, y: 15 }])
+
+
     useEffect(() => {
         // async function action() {
         //     // console.log(dowStocks)
@@ -56,7 +62,15 @@ const StockDetails = () => {
         console.log(d)
         return d.toLocaleString('default', { month: 'short' }) + " " + d.getUTCDay() + ", " + d.getUTCFullYear()
     }
+    function openWatchListModal(){
+        setAddModalIsOpen(true)
+    }
+    function closeModal(){
+        setAddModalIsOpen(false)
+    }
+    function addToWatchList(){
 
+    }
 
     return (
         <Container>
@@ -70,7 +84,7 @@ const StockDetails = () => {
                             <h1>{stockDetails.price} <span className='change'>{stockDetails.today < 0 ? '' : '+'}{stockDetails.today}</span> <span className='changePcnt'>({stockDetails.today < 0 ? '' : '+'}{stockDetails.todayPcnt}%)</span></h1>
                         </div>
                         <div className='button-section'>
-                            <button>Add to watchlist</button>
+                            <button onClick={openWatchListModal}>Add to watchlist</button>
                         </div>
                     </div>
 
@@ -78,10 +92,36 @@ const StockDetails = () => {
                         <h3>{stockDetails.symbol} Stock Summary</h3>
                     </div>
                     <Summary stockDetails={stockDetails} growing={isGrowing} graphData={graphData}/>
+                    
+                    <Modal 
+                        isOpen={addModalIsOpen}
+                        onRequestClose={closeModal} 
+                        className='modal-content' 
+                        overlayClassName='modal-overlay'
+                    >
+                        {/*<button className='close' onClick={closeModal}>close</button>*/}
+                        <h2>Add to Watchlist</h2>
+                        <form onSubmit={addToWatchList}>
+                            <div className='modal-content-form'>
+                                <label htmlFor="symbol">Symbol</label>
+                                <input type='text' name='symbol' value={stockDetails.symbol} />
+                                {/* Allowed to be negative for shorting purposes */}
+                                <label htmlFor="quantity">Quantity</label>
+                                <input type='number' name='quantity' step = '1'/>
+                                <label htmlFor='price'>Price Obtained</label>
+                                <input type='number' name='price' min='0' step='0.01'/>
+                                <input type='submit' value='Add to List' />
+                                <button onClick={closeModal}>Cancel</button>
+                            </div>
+                        </form>
+                    </Modal>
                    
                 </>
+                
             )}
+            
         </Container>
+        
     )
 }
 
