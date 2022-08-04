@@ -48,7 +48,7 @@ const StockDetails = () => {
                 setWatchlistTicker(data.symbol)
                 //Set Color for graphs and such
                 if (data.today < 0)
-                setIsGrowing(false)
+                    setIsGrowing(false)
             });
         // action()
     }, [])
@@ -67,18 +67,40 @@ const StockDetails = () => {
         console.log(d)
         return d.toLocaleString('default', { month: 'short' }) + " " + d.getUTCDay() + ", " + d.getUTCFullYear()
     }
-    function openWatchListModal(){
+    function openWatchListModal() {
         setAddModalIsOpen(true)
     }
-    function closeModal(){
+    function closeModal() {
         setAddModalIsOpen(false)
     }
-    function addToWatchList(e){
+    function addToWatchList(e) {
         e.preventDefault()
         const watchlistData = {
             symbol: watchlistTicker,
             quantity: watchlistQuantity,
             priceObtained: watchlistPriceGot
+        }
+        // localStorage.setItem('watchlist', JSON.stringify(watchlistData))
+        if (localStorage.getItem('watchlist')) {
+            const data = localStorage.getItem('watchlist')
+            var dataparse = JSON.parse(data)
+            console.log(dataparse)
+            var array = dataparse.list.filter(item=> item.symbol != watchlistData.symbol)
+            array.push(watchlistData)
+            const outData = {
+                list: array
+            }
+            localStorage.setItem('watchlist', JSON.stringify(outData))
+        }
+        else {
+            localStorage.setItem('watchlist', JSON.stringify({list: []}))
+            var array = []
+            array.push(watchlistData)
+            console.log(array)
+            const outData = {
+                list: array
+            }
+            localStorage.setItem('watchlist', JSON.stringify(outData))
         }
         console.log(watchlistData)
         closeModal()
@@ -103,12 +125,12 @@ const StockDetails = () => {
                     <div className="header">
                         <h3>{stockDetails.symbol} Stock Summary</h3>
                     </div>
-                    <Summary stockDetails={stockDetails} growing={isGrowing} graphData={graphData}/>
-                    
-                    <Modal 
+                    <Summary stockDetails={stockDetails} growing={isGrowing} graphData={graphData} />
+
+                    <Modal
                         isOpen={addModalIsOpen}
-                        onRequestClose={closeModal} 
-                        className='modal-content' 
+                        onRequestClose={closeModal}
+                        className='modal-content'
                         overlayClassName='modal-overlay'
                     >
                         {/*<button className='close' onClick={closeModal}>close</button>*/}
@@ -119,21 +141,21 @@ const StockDetails = () => {
                                 <input type='text' name='symbol' value={stockDetails.symbol} onChange={(e) => setWatchlistTicker(e.target.value)} />
                                 {/* Allowed to be negative for shorting purposes */}
                                 <label htmlFor="quantity">Quantity</label>
-                                <input type='number' name='quantity' step = '1' onChange={(e) => setWatchlistQuantity(e.target.value)}/>
+                                <input type='number' name='quantity' step='1' onChange={(e) => setWatchlistQuantity(e.target.value)} />
                                 <label htmlFor='price'>Price Obtained</label>
-                                <input type='number' name='price' min='0' step='0.01' onChange={(e) => setWatchlistPriceGot(e.target.value)}/>
+                                <input type='number' name='price' min='0' step='0.01' onChange={(e) => setWatchlistPriceGot(e.target.value)} />
                                 <input type='submit' value='Add to List' />
                                 <button onClick={closeModal}>Cancel</button>
                             </div>
                         </form>
                     </Modal>
-                   
+
                 </>
-                
+
             )}
-            
+
         </Container>
-        
+
     )
 }
 
