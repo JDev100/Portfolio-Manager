@@ -76,9 +76,10 @@ const StockDetails = () => {
     function addToWatchList(e) {
         e.preventDefault()
         const watchlistData = {
+            name: stockDetails.name,
             symbol: watchlistTicker,
             quantity: watchlistQuantity,
-            priceObtained: watchlistPriceGot
+            priceObtainedAt: watchlistPriceGot
         }
         // localStorage.setItem('watchlist', JSON.stringify(watchlistData))
         if (localStorage.getItem('watchlist')) {

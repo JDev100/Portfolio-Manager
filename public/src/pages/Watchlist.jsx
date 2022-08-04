@@ -7,11 +7,7 @@ import styled from 'styled-components'
 
 
 const Watchlist = () => {
-  /* 
-    Temporary Watchlist to Render and display 
-    TODO: Interact with either a database / json file
-  */
-  const [stockDetails, setStockDetails] = useState(null);
+  const [stockWatchlist, setStockWatchlist] = useState([]);
   const exampleWatchList = [
     {
       symbol: "AAPL",
@@ -29,7 +25,15 @@ const Watchlist = () => {
       priceObtainedAt: 56
     }
   ];
-  
+
+  useEffect(() => {
+    if (localStorage.getItem('watchlist')) {
+      const data = localStorage.getItem('watchlist')
+      var dataparse = JSON.parse(data)
+      setStockWatchlist(dataparse.list)
+    }
+  }, [])
+
   return (
     <Container>
       {/* TABLE HEADER */}
@@ -42,22 +46,22 @@ const Watchlist = () => {
 
         <div className="cell" style={{ width: "20px" }}>Symbol</div>
         <div className="cell" style={{ width: "20px" }}>Quantity</div>
-        <div className="cell" style={{ width: "150px" }}>Price Obtained At</div>
-        <div className="cell" style={{ width: "130px" }}>Current Price</div>
+        <div className="cell" style={{ width: "100px" }}>Price Bought</div>
+        <div className="cell" style={{ width: "100px" }}>Current Price</div>
         <div className="cell" style={{ width: "120px" }}>Growth</div>
       </div>
 
       {
-        exampleWatchList?.map((stock, i) => {
+        stockWatchlist?.map((stock, i) => {
           return (
             <div className="table-row" key={i}>
               <Link className="cell-grow" to={`/stockdetails/${stock.symbol}`}>
-                <div>Name</div>
+                <div>{stock.name}</div>
               </Link>
               <div className="cell" style={{ width: "20px" }}>{stock.symbol}</div>
               <div className="cell" style={{ width: "20px" }}>{stock.quantity}</div>
-              <div className="cell" style={{ width: "150px" }}>${stock.priceObtainedAt}</div>
-              <div className="cell" style={{ width: "130px" }}>Current Price</div>
+              <div className="cell" style={{ width: "100px" }}>${stock.priceObtainedAt}</div>
+              <div className="cell" style={{ width: "100px" }}>Current Price</div>
               <div className="cell" style={{ width: "120px" }}>Growth</div>
             </div>
           )
@@ -73,6 +77,13 @@ export const Container = styled.div`
   min-width: 780px;
   margin: auto;
   padding: 2rem 2rem;
+  a {
+    text-decoration: none;
+    color: white;
+    &:hover {
+        text-decoration: underline;
+    }
+  }
   .table-header {
     margin-bottom: 2rem;
   width: 100%;
