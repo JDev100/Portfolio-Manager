@@ -8,6 +8,7 @@ import { ImCross } from 'react-icons/im'
 
 const Watchlist = () => {
   const [stockWatchlist, setStockWatchlist] = useState([]);
+  const [update, setUpdate] = useState(false);
   const exampleWatchList = [
     {
       symbol: "AAPL",
@@ -33,7 +34,7 @@ const Watchlist = () => {
     if (localStorage.getItem('watchlist')) {
       var newArray = array
       localStorage.setItem('watchlist', JSON.stringify({list: newArray}))
-      setStockWatchlist(newArray)
+      setUpdate((old) => !old)
       console.log(newArray)
     }
   }
@@ -46,8 +47,12 @@ const Watchlist = () => {
     }
   }, [])
   useEffect(() => {
-    
-  }, [stockWatchlist])
+    if (localStorage.getItem('watchlist')) {
+      const data = localStorage.getItem('watchlist')
+      var dataparse = JSON.parse(data)
+      setStockWatchlist(dataparse.list)
+    }
+  }, [update])
 
   return (
     <Container>
