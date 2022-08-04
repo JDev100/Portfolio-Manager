@@ -16,6 +16,10 @@ const StockDetails = () => {
     const [stockDetails, setStockDetails] = useState(null);
     const [graphData, setGraphData] = useState([{ x: 1, y: 10 }, { x: 2, y: 5 }, { x: 3, y: 15 }])
 
+    //Watchlist data
+    const [watchlistTicker, setWatchlistTicker] = useState('')
+    const [watchlistQuantity, setWatchlistQuantity] = useState(0)
+    const [watchlistPriceGot, setWatchlistPriceGot] = useState(0)
 
     useEffect(() => {
         // async function action() {
@@ -41,6 +45,7 @@ const StockDetails = () => {
                 })
                 console.log(historyData)
                 setGraphData(historyData)
+                setWatchlistTicker(data.symbol)
                 //Set Color for graphs and such
                 if (data.today < 0)
                 setIsGrowing(false)
@@ -68,8 +73,15 @@ const StockDetails = () => {
     function closeModal(){
         setAddModalIsOpen(false)
     }
-    function addToWatchList(){
-
+    function addToWatchList(e){
+        e.preventDefault()
+        const watchlistData = {
+            symbol: watchlistTicker,
+            quantity: watchlistQuantity,
+            priceObtained: watchlistPriceGot
+        }
+        console.log(watchlistData)
+        closeModal()
     }
 
     return (
@@ -104,12 +116,12 @@ const StockDetails = () => {
                         <form onSubmit={addToWatchList}>
                             <div className='modal-content-form'>
                                 <label htmlFor="symbol">Symbol</label>
-                                <input type='text' name='symbol' value={stockDetails.symbol} />
+                                <input type='text' name='symbol' value={stockDetails.symbol} onChange={(e) => setWatchlistTicker(e.target.value)} />
                                 {/* Allowed to be negative for shorting purposes */}
                                 <label htmlFor="quantity">Quantity</label>
-                                <input type='number' name='quantity' step = '1'/>
+                                <input type='number' name='quantity' step = '1' onChange={(e) => setWatchlistQuantity(e.target.value)}/>
                                 <label htmlFor='price'>Price Obtained</label>
-                                <input type='number' name='price' min='0' step='0.01'/>
+                                <input type='number' name='price' min='0' step='0.01' onChange={(e) => setWatchlistPriceGot(e.target.value)}/>
                                 <input type='submit' value='Add to List' />
                                 <button onClick={closeModal}>Cancel</button>
                             </div>

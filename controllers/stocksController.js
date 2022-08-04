@@ -108,7 +108,7 @@ module.exports.getStockDetails = async (req, res, next) => {
         var historical = quotes;
         historical.sort((a, b) => a.date - b.date)
 
-        console.log(historical)
+        // console.log(historical)
 
         data.historical = historical
     })
