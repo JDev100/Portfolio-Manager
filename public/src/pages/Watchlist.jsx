@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getStockDetailsRoute } from '../utils/APIRoutes'
 import styled from 'styled-components'
+import { ImCross } from 'react-icons/im'
 
 /* For now when the user clicks on to the watchlist  */
 
@@ -26,6 +26,18 @@ const Watchlist = () => {
     }
   ];
 
+  const deleteStock = (index) => {
+    console.log(index)
+    var array = stockWatchlist
+    array.splice(index, 1)
+    if (localStorage.getItem('watchlist')) {
+      var newArray = array
+      localStorage.setItem('watchlist', JSON.stringify({list: newArray}))
+      setStockWatchlist(newArray)
+      console.log(newArray)
+    }
+  }
+
   useEffect(() => {
     if (localStorage.getItem('watchlist')) {
       const data = localStorage.getItem('watchlist')
@@ -33,6 +45,9 @@ const Watchlist = () => {
       setStockWatchlist(dataparse.list)
     }
   }, [])
+  useEffect(() => {
+    
+  }, [stockWatchlist])
 
   return (
     <Container>
@@ -49,6 +64,7 @@ const Watchlist = () => {
         <div className="cell" style={{ width: "100px" }}>Price Bought</div>
         <div className="cell" style={{ width: "100px" }}>Current Price</div>
         <div className="cell" style={{ width: "120px" }}>Growth</div>
+        {/* <div className="cell" style={{ width: "20px" }}></div> */}
       </div>
 
       {
@@ -62,7 +78,10 @@ const Watchlist = () => {
               <div className="cell" style={{ width: "20px" }}>{stock.quantity}</div>
               <div className="cell" style={{ width: "100px" }}>${stock.priceObtainedAt}</div>
               <div className="cell" style={{ width: "100px" }}>Current Price</div>
-              <div className="cell" style={{ width: "120px" }}>Growth</div>
+              <div className="cell" style={{ width: "120px" }}>
+                <div className='flex-between'>Growth <ImCross onClick={() => deleteStock(i)} /></div>
+              </div>
+              {/* <div className="cell" style={{ width: "20px" }}><ImCross/></div> */}
             </div>
           )
         })
@@ -77,6 +96,17 @@ export const Container = styled.div`
   min-width: 780px;
   margin: auto;
   padding: 2rem 2rem;
+  svg {
+    cursor: pointer;
+    &:hover {
+      color: #8c8c8e;
+    }
+  }
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   a {
     text-decoration: none;
     color: white;
