@@ -139,7 +139,7 @@ const StockDetails = () => {
                         <form onSubmit={addToWatchList}>
                             <div className='modal-content-form'>
                                 <label htmlFor="symbol">Symbol</label>
-                                <input type='text' name='symbol' value={stockDetails.symbol} onChange={(e) => setWatchlistTicker(e.target.value)} />
+                                <input type='text' name='symbol' value={stockDetails.symbol} />
                                 {/* Allowed to be negative for shorting purposes */}
                                 <label htmlFor="quantity">Quantity</label>
                                 <input type='number' name='quantity' step='1' onChange={(e) => setWatchlistQuantity(e.target.value)} />

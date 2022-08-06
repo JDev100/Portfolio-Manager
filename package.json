@@ -13,6 +13,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "grademark": "^0.2.9",
     "humanize-plus": "^1.8.2",
     "nodemon": "^2.0.19",
     "yahoo-finance": "^0.3.7"

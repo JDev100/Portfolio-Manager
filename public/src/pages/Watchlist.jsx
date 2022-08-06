@@ -9,23 +9,6 @@ import { ImCross } from 'react-icons/im'
 const Watchlist = () => {
   const [stockWatchlist, setStockWatchlist] = useState([]);
   const [update, setUpdate] = useState(false);
-  const exampleWatchList = [
-    {
-      symbol: "AAPL",
-      quantity: 20,
-      priceObtainedAt: 150
-    },
-    {
-      symbol: "TSLA",
-      quantity: 45,
-      priceObtainedAt: 234
-    },
-    {
-      symbol: "CRM",
-      quantity: 15,
-      priceObtainedAt: 56
-    }
-  ];
 
   const deleteStock = (index) => {
     console.log(index)

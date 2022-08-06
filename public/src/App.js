@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import StockDetails from './pages/StockDetails';
 import Watchlist from './pages/Watchlist'
+import Backtesting from './pages/Backtesting';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/stockdetails/:stockid' element={<StockDetails />} />
             <Route path='/watchlist/' element={<Watchlist />} />
+            <Route path='/backtest/' element={<Backtesting/>} />
           </Routes>
 
         
