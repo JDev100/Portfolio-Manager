@@ -150,7 +150,10 @@ const StockDetails = () => {
                             <h1>{stockDetails.price} <span className='change'>{stockDetails.today < 0 ? '' : '+'}{stockDetails.today}</span> <span className='changePcnt'>({stockDetails.today < 0 ? '' : '+'}{stockDetails.todayPcnt}%)</span></h1>
                         </div>
                         <div className='button-section'>
-                            <button onClick={openWatchListModal}>Add to watchlist</button>
+                            <div className="buttons">
+                                <button onClick={openWatchListModal}>Add to watchlist</button>
+                                <button className='btn-primary'>Run Backtest</button>
+                            </div>
                         </div>
                     </div>
 
@@ -248,10 +251,18 @@ export const Container = styled.div`
         width: .9rem;
     }
     .button-section {
+        .btn-primary {
+            background-color: #4137bd;
+            border-color: #4137bd;
+        }
         flex-direction: column;
         display: flex;
         flex: 1;
         align-items: flex-end;
+        .buttons {
+            display: flex;
+            gap: 1rem;
+        }
     }
     button {
         height: 3rem;
