@@ -3,7 +3,7 @@ import axios from 'axios'
 import Modal from 'react-modal'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { getStockDetailsRoute } from '../utils/APIRoutes'
+import { getStockDetailsRoute, getStockHistoryRoute } from '../utils/APIRoutes'
 import Summary from '../components/Summary'
 
 Modal.setAppElement('#root')
@@ -30,25 +30,56 @@ const StockDetails = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
+                // console.log(data)
                 setStockDetails(data)
                 setIsLoading(false)
 
                 //Set graph data for chart
                 var historyData = []
                 data.historical.map((quote, index) => {
-                    console.log(quote)
+                    // console.log(quote)
                     historyData.push({
                         x: index,
                         y: quote.open
                     })
                 })
-                console.log(historyData)
+                // console.log(historyData)
                 setGraphData(historyData)
                 setWatchlistTicker(data.symbol)
                 //Set Color for graphs and such
                 if (data.today < 0)
                     setIsGrowing(false)
+            });
+
+
+
+        fetch(`${getStockHistoryRoute}`, {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                data: {
+                    ticker: 'AAPL',
+                    dateStart: '2012-01-01',
+                    dateEnd: '2012-12-31'
+                }
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                //Set graph data for chart
+                // var historyData = []
+                // data.historical.map((quote, index) => {
+                //     console.log(quote)
+                //     historyData.push({
+                //         x: index,
+                //         y: quote.open
+                //     })
+                // })
+                // console.log(historyData)
             });
         // action()
     }, [])
@@ -86,7 +117,7 @@ const StockDetails = () => {
             const data = localStorage.getItem('watchlist')
             var dataparse = JSON.parse(data)
             console.log(dataparse)
-            var array = dataparse.list.filter(item=> item.symbol != watchlistData.symbol)
+            var array = dataparse.list.filter(item => item.symbol != watchlistData.symbol)
             array.push(watchlistData)
             const outData = {
                 list: array
@@ -94,7 +125,7 @@ const StockDetails = () => {
             localStorage.setItem('watchlist', JSON.stringify(outData))
         }
         else {
-            localStorage.setItem('watchlist', JSON.stringify({list: []}))
+            localStorage.setItem('watchlist', JSON.stringify({ list: [] }))
             var array = []
             array.push(watchlistData)
             console.log(array)
