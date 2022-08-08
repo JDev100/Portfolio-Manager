@@ -120,25 +120,23 @@ module.exports.getStockDetails = async (req, res, next) => {
 module.exports.getStockHistory = async (req, res, next) => {
     const {data} = req.body
     const outData = {}
-    console.log(data)
+    //console.log(data)
     const today = new Date()
-    const weekAgo = getDateXDaysAgo(30, today)
+    //const weekAgo = getDateXDaysAgo(30, today)
 
     // Get Historical data
     await yahooFinance.historical({
-        symbol: data.ticker,
+        symbols: data.tickers,
         from: data.dateStart,
         to: data.dateEnd,
         period: 'w'
     }, function (err, quotes) {
         var historical = quotes;
-        historical.sort((a, b) => a.date - b.date)
+        //historical.sort((a, b) => a.date - b.date)
 
         // console.log(historical)
 
         outData.historical = historical
     })
-
-
     res.json(outData)
 }

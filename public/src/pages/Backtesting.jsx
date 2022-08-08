@@ -1,16 +1,61 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import {getStockHistoryRoute} from '../utils/APIRoutes'
+import {trade} from 'trade'
 
 const Backtesting = ()=> {
     let current_date = new Date();
 
+    const [data, setData] = useState();
+
     //Backtesting form vars
     const [backtestMethod, setBacktestMethod] = useState('100sma');
-    const [backtestStart, setBacktestStart] = useState('2000-01-01');
-    const [backtestEnd, setBacktestEnd] = useState('2001-01-01');
+    const [backtestStart, setBacktestStart] = useState('2012-01-01');
+    const [backtestEnd, setBacktestEnd] = useState('2012-12-31');
+
+    // Returns the watchlist symbols in a [TICKER,TICKER,TICKER,...] fashion
+    function getWatchlistSymbols() {
+        let symbols = [];
+        if (localStorage.getItem('watchlist')) {
+            let data = localStorage.getItem('watchlist');
+            var dataparse = JSON.parse(data);
+            var watchlist = dataparse.list;
+            watchlist.map(x => {
+                symbols.push(x.symbol);
+            });
+        }
+        return symbols;
+    }
+
 
     function startBacktest(e) {
-        
+        e.preventDefault();
+
+        let symbols = getWatchlistSymbols();
+        let historicalData = null;
+
+        fetch(`${getStockHistoryRoute}`, {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                data: {
+                    tickers: symbols,
+                    dateStart: backtestStart,
+                    dateEnd: backtestEnd 
+                }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.historical)
+
+            
+        });
+
+
     }
 
     return (

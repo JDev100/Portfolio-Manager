@@ -42,17 +42,22 @@ const Watchlist = () => {
       {/* TABLE HEADER */}
 
       <div className="table-header">
-        <h3>WATCHLIST</h3>
+        <h3 className='table-title'>WATCHLIST</h3>
+        <div className='button-section'>
+          <div className='buttons'>
+            <button className='btn-primary'>Run Backtest</button>
+          </div>
+        </div>
       </div>
       <div className="table-row main">
         <div className="cell-grow">Name</div>
 
         <div className="cell" style={{ width: "20px" }}>Symbol</div>
         <div className="cell" style={{ width: "20px" }}>Quantity</div>
-        <div className="cell" style={{ width: "100px" }}>Price Bought</div>
+        {/*<div className="cell" style={{ width: "100px" }}>Price Bought</div>
         <div className="cell" style={{ width: "100px" }}>Current Price</div>
-        <div className="cell" style={{ width: "120px" }}>Growth</div>
-        {/* <div className="cell" style={{ width: "20px" }}></div> */}
+        <div className="cell" style={{ width: "120px" }}>Growth</div>*/}
+        <div className="cell" style={{ width: "320px" }}></div>
       </div>
 
       {
@@ -64,10 +69,10 @@ const Watchlist = () => {
               </Link>
               <div className="cell" style={{ width: "20px" }}>{stock.symbol}</div>
               <div className="cell" style={{ width: "20px" }}>{stock.quantity}</div>
-              <div className="cell" style={{ width: "100px" }}>${stock.priceObtainedAt}</div>
-              <div className="cell" style={{ width: "100px" }}>Current Price</div>
-              <div className="cell" style={{ width: "120px" }}>
-                <div className='flex-between'>Growth <ImCross onClick={() => deleteStock(i)} /></div>
+              {/*<div className="cell" style={{ width: "100px" }}>${stock.priceObtainedAt}</div>
+              <div className="cell" style={{ width: "100px" }}>Current Price</div>*/}
+              <div className="cell" style={{ width: "320px" }}>
+                <div className='flex-between'><ImCross onClick={() => deleteStock(i)} /></div>
               </div>
               {/* <div className="cell" style={{ width: "20px" }}><ImCross/></div> */}
             </div>
@@ -83,7 +88,34 @@ export const Container = styled.div`
   max-width: 1400px;
   min-width: 780px;
   margin: auto;
-  padding: 2rem 2rem;
+  padding: 2rem 2rem;    
+  .table-title {
+    display:block;
+  }
+.button-section {
+  .btn-primary {
+      background-color: #4137bd;
+      border-color: #4137bd;
+  }
+  flex-direction: column;
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  .buttons {
+      display: flex;
+      gap: 1rem;
+  }
+}
+
+button {
+    height: 3rem;
+    padding: .5rem 1rem;
+    justify-content: center;
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    cursor: pointer;
+}
   svg {
     cursor: pointer;
     &:hover {
@@ -104,8 +136,9 @@ export const Container = styled.div`
   }
   .table-header {
     margin-bottom: 2rem;
-  width: 100%;
+    width: 100%;
     border-bottom: 0.1rem solid #fff;
+    display:flex;
   }
   .table-row {
    

@@ -50,37 +50,6 @@ const StockDetails = () => {
                 if (data.today < 0)
                     setIsGrowing(false)
             });
-
-
-
-        fetch(`${getStockHistoryRoute}`, {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                data: {
-                    ticker: 'AAPL',
-                    dateStart: '2012-01-01',
-                    dateEnd: '2012-12-31'
-                }
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                //Set graph data for chart
-                // var historyData = []
-                // data.historical.map((quote, index) => {
-                //     console.log(quote)
-                //     historyData.push({
-                //         x: index,
-                //         y: quote.open
-                //     })
-                // })
-                // console.log(historyData)
-            });
         // action()
     }, [])
 
@@ -112,7 +81,6 @@ const StockDetails = () => {
             quantity: watchlistQuantity,
             priceObtainedAt: watchlistPriceGot
         }
-        // localStorage.setItem('watchlist', JSON.stringify(watchlistData))
         if (localStorage.getItem('watchlist')) {
             const data = localStorage.getItem('watchlist')
             var dataparse = JSON.parse(data)
@@ -134,8 +102,9 @@ const StockDetails = () => {
             }
             localStorage.setItem('watchlist', JSON.stringify(outData))
         }
-        console.log(watchlistData)
+        //console.log(watchlistData)
         closeModal()
+        alert(`Added ${stockDetails.symbol} to watchlist!`);
     }
 
     return (
@@ -152,7 +121,6 @@ const StockDetails = () => {
                         <div className='button-section'>
                             <div className="buttons">
                                 <button onClick={openWatchListModal}>Add to watchlist</button>
-                                <button className='btn-primary'>Run Backtest</button>
                             </div>
                         </div>
                     </div>
@@ -173,12 +141,12 @@ const StockDetails = () => {
                         <form onSubmit={addToWatchList}>
                             <div className='modal-content-form'>
                                 <label htmlFor="symbol">Symbol</label>
-                                <input type='text' name='symbol' value={stockDetails.symbol} />
+                                <input type='text' name='symbol' value={stockDetails.symbol} readOnly='true' />
                                 {/* Allowed to be negative for shorting purposes */}
                                 <label htmlFor="quantity">Quantity</label>
                                 <input type='number' name='quantity' step='1' onChange={(e) => setWatchlistQuantity(e.target.value)} />
-                                <label htmlFor='price'>Price Obtained</label>
-                                <input type='number' name='price' min='0' step='0.01' onChange={(e) => setWatchlistPriceGot(e.target.value)} />
+                                {/*<label htmlFor='price'>Price Obtained</label>
+                                <input type='number' name='price' min='0' step='0.01' onChange={(e) => setWatchlistPriceGot(e.target.value)} />*/}
                                 <input type='submit' value='Add to List' />
                                 <button onClick={closeModal}>Cancel</button>
                             </div>
