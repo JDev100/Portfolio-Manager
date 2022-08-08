@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import {getStockHistoryRoute} from '../utils/APIRoutes'
-import {trade} from 'trade'
+import {getBacktestRoute, getStockHistoryRoute} from '../utils/APIRoutes'
 
 const Backtesting = ()=> {
     let current_date = new Date();
 
-    const [data, setData] = useState();
+    const backtestData = [];
 
     //Backtesting form vars
     const [backtestMethod, setBacktestMethod] = useState('100sma');
@@ -25,16 +24,16 @@ const Backtesting = ()=> {
             });
         }
         return symbols;
-    }
+    }  
+    
 
 
     function startBacktest(e) {
         e.preventDefault();
 
         let symbols = getWatchlistSymbols();
-        let historicalData = null;
 
-        fetch(`${getStockHistoryRoute}`, {
+        /*fetch(`${getStockHistoryRoute}`, {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -50,11 +49,34 @@ const Backtesting = ()=> {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data.historical)
+            for (var symbol in data.historical) {
+                for (var week in data.historical[symbol]){
+                    //data.historical[symbol][week]['date'] = new Date(data.historical[symbol][week]['date']);
+                    backtestData.push(data.historical[symbol][week]);
+                }
+            }
+            return backtestData;
+        });*/
 
-            
+        fetch(`${getBacktestRoute}`, {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                data: {
+                    tickers: symbols,
+                    dateStart: backtestStart,
+                    dateEnd: backtestEnd,
+                    capital: 10000
+                }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
         });
-
 
     }
 
