@@ -1,4 +1,4 @@
-var {trade} = import('trade');
+//var {trade} = import('trade');
 var yahooFinance = require('yahoo-finance');
 var humanize = require('humanize-plus')
 var stockDetails = require('../utils/stockDetails');
@@ -163,34 +163,24 @@ async function __getHistoricalData(tickers, dateStart, dateEnd) {
     return null;
 }
 
+/*
 const createOrders = ({ data, positions, cash }) => {
-    // Get newest data (index 0 is current bar's data, index 1 is previous bar's data)
     const [current, previous] = data;
 
-    // If there is no previous data (because we're on the first data) don't trade anything:
-    // return empty orders.
     if (!previous) return [];
 
-    // Store the instruments that we want to have long or short positions of
     const expectedPositions = [];
 
-    // Go through all current data and get data for the same instrument on previous bar
     for (const instrumentData of current) {
         const { symbol } = instrumentData;
-        // Get previous bar's data for the current symbol
         const previousInstrumentData = previous.find(item => item.symbol === symbol);
-        // If there is no data for the previous bar, we don't take or hold a position
         if (!previousInstrumentData) continue;
-        // Direction is -1 for short and 1 for long
         const direction = instrumentData.close > previousInstrumentData.close ? 1 : -1;
         expectedPositions.push({ data: instrumentData, direction });
     }
 
-    // Get amount of money available (cash plus value of all all open positions)
     const available = cash + positions.reduce((prev, pos) => prev + pos.value, 0);
-    // Divide money equally by all positions we are expected to hold
     const moneyPerPosition = available / expectedPositions.length;
-    // Calculate position size for every symbol we hold
     const orders = expectedPositions.map(position => ({
         symbol: position.data.symbol,
         size: Math.floor(moneyPerPosition / position.data.close) * position.direction,
@@ -222,4 +212,4 @@ module.exports.backtest = async (req, res, next) => {
     });
 
     res.json(result);
-}
+}*/

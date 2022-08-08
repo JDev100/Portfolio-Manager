@@ -37,6 +37,10 @@ const Watchlist = () => {
     }
   }, [update])
 
+  function runBacktest(){
+    
+  }
+
   return (
     <Container>
       {/* TABLE HEADER */}
@@ -45,7 +49,11 @@ const Watchlist = () => {
         <h3 className='table-title'>WATCHLIST</h3>
         <div className='button-section'>
           <div className='buttons'>
-            <button className='btn-primary'>Run Backtest</button>
+            <label for='startDate'>Start Date:</label>
+            <input name='startDate' type='date'/>
+            <label for='endDate'>End Date:</label>
+            <input name='endDate' type='date'/>
+            <button className='btn-primary' onClick={runBacktest}>Run Backtest</button>
           </div>
         </div>
       </div>
