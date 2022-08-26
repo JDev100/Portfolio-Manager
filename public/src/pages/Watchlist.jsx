@@ -47,7 +47,7 @@ const Watchlist = () => {
 
       <div className="table-header">
         <h3 className='table-title'>WATCHLIST</h3>
-        <div className='button-section'>
+        {/* <div className='button-section'>
           <div className='buttons'>
             <label for='startDate'>Start Date:</label>
             <input name='startDate' type='date'/>
@@ -55,7 +55,7 @@ const Watchlist = () => {
             <input name='endDate' type='date'/>
             <button className='btn-primary' onClick={runBacktest}>Run Backtest</button>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="table-row main">
         <div className="cell-grow">Name</div>
