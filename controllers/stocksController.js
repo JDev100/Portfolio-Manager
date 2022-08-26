@@ -1,6 +1,7 @@
+//var {trade} = import('trade');
 var yahooFinance = require('yahoo-finance');
 var humanize = require('humanize-plus')
-var stockDetails = require('../utils/stockDetails')
+var stockDetails = require('../utils/stockDetails');
 
 //From https://stackoverflow.com/questions/25416635/display-number-with-significant-figures-and-k-m-b-t-suffix-in-javascript
 // Calculates significant figures with suffixes K/M/B/T, e.g. 1234 = 1.23K
@@ -120,25 +121,95 @@ module.exports.getStockDetails = async (req, res, next) => {
 module.exports.getStockHistory = async (req, res, next) => {
     const {data} = req.body
     const outData = {}
-    console.log(data)
-    const today = new Date()
-    const weekAgo = getDateXDaysAgo(30, today)
+    //console.log(data)
+    //const today = new Date()
+    //const weekAgo = getDateXDaysAgo(30, today)
 
     // Get Historical data
     await yahooFinance.historical({
-        symbol: data.ticker,
+        symbols: data.tickers,
         from: data.dateStart,
         to: data.dateEnd,
         period: 'w'
     }, function (err, quotes) {
         var historical = quotes;
-        historical.sort((a, b) => a.date - b.date)
+        //historical.sort((a, b) => a.date - b.date)
 
         // console.log(historical)
 
         outData.historical = historical
     })
-
-
     res.json(outData)
 }
+
+/* BACKTESTS */
+
+async function __getHistoricalData(tickers, dateStart, dateEnd) {
+    //console.log(data)
+    //const today = new Date()
+    //const weekAgo = getDateXDaysAgo(30, today)
+
+    // Get Historical data
+    await yahooFinance.historical({
+        symbols: tickers,
+        from: dateStart,
+        to: dateEnd,
+        period: 'w'
+    }, function (err, quotes) {
+        return quotes;
+    });
+
+    error('__getHistoricalData null');
+    return null;
+}
+
+/*
+const createOrders = ({ data, positions, cash }) => {
+    const [current, previous] = data;
+
+    if (!previous) return [];
+
+    const expectedPositions = [];
+
+    for (const instrumentData of current) {
+        const { symbol } = instrumentData;
+        const previousInstrumentData = previous.find(item => item.symbol === symbol);
+        if (!previousInstrumentData) continue;
+        const direction = instrumentData.close > previousInstrumentData.close ? 1 : -1;
+        expectedPositions.push({ data: instrumentData, direction });
+    }
+
+    const available = cash + positions.reduce((prev, pos) => prev + pos.value, 0);
+    const moneyPerPosition = available / expectedPositions.length;
+    const orders = expectedPositions.map(position => ({
+        symbol: position.data.symbol,
+        size: Math.floor(moneyPerPosition / position.data.close) * position.direction,
+    }));
+    return orders;
+};
+
+module.exports.backtest = async (req, res, next) => {
+    const {data} = req.body;
+    const {tickers, dateStart, dateEnd, capital} = data;
+
+    const historicalData = __getHistoricalData(tickers, dateStart, dateEnd);
+    const backtestData = [];
+    for (var symbol in historicalData) {
+        for (var week in historicalData[symbol]){
+            //data.historical[symbol][week]['date'] = new Date(data.historical[symbol][week]['date']);
+            backtestData.push(data.historical[symbol][week]);
+        }
+    }
+    function* getData() {
+        const parsedData = backtestData.map(item => ({ ...item, date: new Date(item.date) }));
+        yield parsedData;
+    }
+
+    let result = await trade({
+        getData: getData,
+        createOrders: createOrders,
+        cash: capital
+    });
+
+    res.json(result);
+}*/
